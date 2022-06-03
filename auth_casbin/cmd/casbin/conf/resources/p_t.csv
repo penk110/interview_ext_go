@@ -1,0 +1,8 @@
+
+p, admin,domain1, /employee, GET
+
+p, admin,domain2, /employee, POST
+
+g, hr_manager, admin,domain1
+g, hr_tester, admin,domain2
+

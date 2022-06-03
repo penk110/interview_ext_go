@@ -32,3 +32,10 @@ GET /users
 添加GET权限：
     tester,/users,GET
 ```
+
+多租户
+```
+curl --location --request GET 'http://127.0.0.1:8080/api/v1/dept/12' \
+--header 'token: dev' \
+--header 'domain: domain1'
+```

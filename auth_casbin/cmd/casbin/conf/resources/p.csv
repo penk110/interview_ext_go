@@ -1,0 +1,11 @@
+
+p, member, /dept, GET
+p, member, /dept/:id, GET
+
+p, admin, /dept, POST
+p, admin, /dept/:id, PUT
+p, admin, /dept/:id, DELETE
+
+g, admin, member
+g, dev, admin
+g, tester, member
