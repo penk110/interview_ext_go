@@ -39,3 +39,27 @@ curl --location --request GET 'http://127.0.0.1:8080/api/v1/dept/12' \
 --header 'token: dev' \
 --header 'domain: domain1'
 ```
+
+预留
+1.设置生效范围
+```
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act, eft
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow)) && !some(where (p.eft == deny))
+
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+
+```
+2.配置超级管理员
+```
+```
