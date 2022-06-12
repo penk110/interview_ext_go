@@ -15,7 +15,7 @@ var client *redis.Client
 var once sync.Once
 
 const (
-	defaultAddr = "127.0.0.1:6379"
+	defaultAddr = "192.168.3.11:6379"
 )
 
 var addr string
