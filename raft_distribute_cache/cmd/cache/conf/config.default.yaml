@@ -1,0 +1,18 @@
+serverName: data.cache
+serverId: 1
+
+logStore: ./node1/log_store.bolt
+stableStore: ./node1/stable_store.bolt
+snapshot: ./node1
+
+transport: 127.0.0.1:3001
+port: 8081
+
+localCache: ./tmp/node1
+servers:
+  - id: 1
+    address: 127.0.0.1:3001
+    http: http://127.0.0.1:8081
+  - id: 2
+    address: 127.0.0.1:3002
+    http: http://127.0.0.1:8082
