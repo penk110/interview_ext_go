@@ -41,18 +41,41 @@ func (b *BadgerCache) KeysWithPrefix(prefix string, size int) ([]string, error) 
 }
 
 func (b *BadgerCache) SetItem(key string, value string) error {
-	//TODO implement me
-	panic("implement me")
+	err := b.Update(func(txn *badger.Txn) error {
+		return txn.Set([]byte(key), []byte(value))
+	})
+	return err
 }
 
 func (b *BadgerCache) SetItemWithTTl(key string, value string, ttl time.Duration) error {
-	//TODO implement me
-	panic("implement me")
+	err := b.Update(func(txn *badger.Txn) error {
+		entry := badger.NewEntry([]byte(key), []byte(value)).WithTTL(ttl)
+		return txn.SetEntry(entry)
+	})
+	return err
 }
 
 func (b *BadgerCache) GetItem(key string) (string, error) {
-	//TODO implement me
-	panic("implement me")
+	var ret string
+	err := b.View(func(txn *badger.Txn) error {
+		item, err := txn.Get([]byte(key))
+		if err != nil {
+			return err
+		}
+		err = item.Value(func(val []byte) error {
+			ret = string(val)
+			return nil
+		})
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+
+	if err != nil {
+		return "", err
+	}
+	return ret, nil
 }
 
 func (b *BadgerCache) DelItem(key string) error {

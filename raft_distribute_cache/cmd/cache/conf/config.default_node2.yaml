@@ -1,8 +1,8 @@
 service:
-  serviceId: 1
+  serviceId: 2
   serviceName: data.cache
   ip: 127.0.0.1
-  port: 8081
+  port: 8082
   mode: debug # "debug" "release" "test"
 
 nodes:
@@ -16,15 +16,15 @@ nodes:
 log:
   level: debug
   logfile:
-    filename: "../log/cache.log"
+    filename: "../log/cache2.log"
     maxsize: 20     # MB
     maxage: 15      # days
     maxbackups: 5
 
 raftConfig:
-  logStore: ./node1/log_store.bolt
-  stableStore: ./node1/stable_store.bolt
-  snapshot: ./node1
-  localCache: ./tmp/node1
-  transport: 127.0.0.1:3001
+  logStore: ./node2/log_store.bolt
+  stableStore: ./node2/stable_store.bolt
+  snapshot: ./node2
+  localCache: ./tmp/node2
+  transport: 127.0.0.1:3002
 
