@@ -2,34 +2,25 @@ package cache
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hashicorp/raft"
-	jsonIter "github.com/json-iterator/go"
 
-	"github.com/penk110/interview_ext_go/logging_zap"
-	"github.com/penk110/interview_ext_go/raft_distribute_cache/internal/cache"
 	"github.com/penk110/interview_ext_go/raft_distribute_cache/internal/raft_node"
 )
 
 type CacherController struct {
-	logger   logging_zap.LoggerImpl
-	cache    cache.Cache
-	raftNode *raft.Raft // 不方便mock?
+	cacheService ServiceImpl
 }
 
-func NewCacherController(logger logging_zap.LoggerImpl, cache cache.Cache, raftNode *raft.Raft) *CacherController {
+func NewCacherController(cacheService ServiceImpl) *CacherController {
 	return &CacherController{
-		logger:   logger,
-		cache:    cache,
-		raftNode: raftNode,
+		cacheService: cacheService,
 	}
 }
 
 func (c *CacherController) Get(ctx *gin.Context) {
 	key := ctx.Param("key")
-	value, err := c.cache.GetItem(key)
+	value, err := c.cacheService.Get(key)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code":   400000,
@@ -58,9 +49,7 @@ func (c *CacherController) Set(ctx *gin.Context) {
 		})
 		return
 	}
-	reqBytes, _ := jsonIter.Marshal(cacheReq)
-	future := c.raftNode.Apply(reqBytes, time.Second*10)
-	if err := future.Error(); err != nil {
+	if err := c.cacheService.Set(cacheReq); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code":    400000,
 			"message": err.Error(),
